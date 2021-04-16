@@ -194,7 +194,7 @@ namespace YariNovella
                 MainWindow workwin = new MainWindow(player); // Переход на рабочее окно
                 this.Hide();
                 workwin.ShowDialog();
-                this.Close();
+                this.Show();
             }
             else// при неправильном вводе пароля
             {
@@ -217,7 +217,7 @@ namespace YariNovella
                 MainWindow workwin = new MainWindow(currentuser);
                 this.Hide();
                 workwin.ShowDialog();
-                this.Close();
+                this.Show();
             }
             else
             {

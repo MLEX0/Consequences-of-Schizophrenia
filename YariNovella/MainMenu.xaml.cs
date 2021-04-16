@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,6 +37,10 @@ namespace YariNovella
         public MainWindow(HelpClass.PlayerClass player)
         {
             InitializeComponent();
+
+            SoundPlayer sp = new SoundPlayer();
+            sp.SoundLocation = "Sounds/BEST-RIDING-ROCK-MUSIC-_NCS-SONG_.wav";
+            sp.PlayLooping();
 
             if (File.Exists("Lore.txt") == true)
             {
@@ -215,30 +220,31 @@ namespace YariNovella
 
         private void Next()
         {
-            
 
             playerSaves++;
             var thispage = LoreList[playerSaves];
-            PageSelecter(thispage.PagePath);
-            if (thispage.PageNumber == 311)
+            if (playerSaves == 311)
             {
                 MessageBox.Show("КОНЕЦ!!!!");
+                this.Close();
             }
-            MessageBox.Show(Convert.ToString(thispage.PageNumber));
+            PageSelecter(thispage.PagePath);
+
+            //MessageBox.Show(Convert.ToString(thispage.PageNumber));
 
 
 
             if (thispage.PageNumber == 295 && endingchoise == 0)
             {
-                playerSaves = 311;
+                playerSaves = 310;
             }
             if (thispage.PageNumber == 303 && endingchoise == 1)
             {
-                playerSaves = 311;
+                playerSaves = 310;
             }
             if (thispage.PageNumber == 311 && endingchoise == 2)
             {
-                playerSaves = 311;
+                playerSaves = 310;
             }
 
             if (thispage.PageNumber == 5)
@@ -253,15 +259,15 @@ namespace YariNovella
             {
                 if (endingchoise == 0)
                 {
-                    playerSaves = 277;
+                    playerSaves = 276;
                 }
                 if (endingchoise == 1)
                 {
-                    playerSaves = 296;
+                    playerSaves = 295;
                 }   
                 if (endingchoise == 2)
                 {
-                    playerSaves = 304;
+                    playerSaves = 303;
                 }
             }
 
