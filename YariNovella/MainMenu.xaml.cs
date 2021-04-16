@@ -24,6 +24,7 @@ namespace YariNovella
     public partial class MainWindow : Window
     {
         List<HelpClass.LoreClass> LoreList = new List<HelpClass.LoreClass>();
+        SoundPlayer sp = new SoundPlayer();
         int playerSaves;
         int endingcount = 0;
         int daycounter = 0;
@@ -38,7 +39,6 @@ namespace YariNovella
         {
             InitializeComponent();
 
-            SoundPlayer sp = new SoundPlayer();
             sp.SoundLocation = "Sounds/BEST-RIDING-ROCK-MUSIC-_NCS-SONG_.wav";
             sp.PlayLooping();
 
@@ -226,6 +226,7 @@ namespace YariNovella
             if (playerSaves == 311)
             {
                 MessageBox.Show("КОНЕЦ!!!!");
+                sp.Stop();
                 this.Close();
             }
             PageSelecter(thispage.PagePath);
@@ -300,6 +301,7 @@ namespace YariNovella
             if (endingcount > 5)
             {
                 MessageBox.Show("Вы не проснулись, это был правильный выбор, до новых встреч!", "Конец!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                sp.Stop();
                 this.Close();
             }
         }
