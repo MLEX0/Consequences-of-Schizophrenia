@@ -103,6 +103,9 @@
     <Compile Include="Frames\Page23.xaml.cs">
       <DependentUpon>Page23.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Frames\Page24.xaml.cs">
+      <DependentUpon>Page24.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Frames\Page3.xaml.cs">
       <DependentUpon>Page3.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Frames\Page23.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Frames\Page24.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,6 +305,9 @@
     <Resource Include="Frames\Black.jpg" />
     <Resource Include="Frames\Logo.jpg" />
     <Resource Include="Frames\mainhome.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Frames\End.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

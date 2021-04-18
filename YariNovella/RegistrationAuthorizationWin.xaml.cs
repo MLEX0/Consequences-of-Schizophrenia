@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using YariNovella.HelpClass;
 
+
 namespace YariNovella
 {
     /// <summary>
@@ -55,7 +56,7 @@ namespace YariNovella
             }
             else
             {
-                MessageBox.Show("Отсутствует лист, перезапустите программу!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Отсутствует лист пользователя, перезапустите программу!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             if (File.Exists("Data.txt") == false)
@@ -194,7 +195,7 @@ namespace YariNovella
                 MainWindow workwin = new MainWindow(player); // Переход на рабочее окно
                 this.Hide();
                 workwin.ShowDialog();
-                this.Show();
+                this.Close();
             }
             else// при неправильном вводе пароля
             {
@@ -217,7 +218,7 @@ namespace YariNovella
                 MainWindow workwin = new MainWindow(currentuser);
                 this.Hide();
                 workwin.ShowDialog();
-                this.Show();
+                this.Close();
             }
             else
             {

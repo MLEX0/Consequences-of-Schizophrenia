@@ -23,12 +23,14 @@ namespace YariNovella
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<HelpClass.PlayerClass> PlayerList = new List<HelpClass.PlayerClass>();
         List<HelpClass.LoreClass> LoreList = new List<HelpClass.LoreClass>();
         SoundPlayer sp = new SoundPlayer();
         int playerSaves;
         int endingcount = 0;
         int daycounter = 0;
         int endingchoise = 0;
+        HelpClass.PlayerClass thisplayerData;
 
         public MainWindow()
         {
@@ -38,6 +40,47 @@ namespace YariNovella
         public MainWindow(HelpClass.PlayerClass player)
         {
             InitializeComponent();
+
+            thisplayerData = player;
+
+
+            if (File.Exists("Data.txt") == true)
+            {
+                using (StreamReader sr = new StreamReader("Data.txt"))
+                {
+                    string[] words;
+                    for (int i = 0; i < File.ReadLines("Data.txt").Count(); i++)
+                    {
+                        string str = sr.ReadLine();
+                        words = str.Split(new char[] { '@' });
+                        if (words[0] != "<DELETED>")
+                        {
+                            PlayerList.Add(new HelpClass.PlayerClass
+                            {
+                                Id = Convert.ToInt32(words[0]),
+                                Name = words[1],
+                                LastName = words[2],
+                                Login = words[3],
+                                Password = words[4],
+                                PageNumber = Convert.ToInt32(words[5])
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Отсутствует лист пользователя, перезапустите программу!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            if (File.Exists("Data.txt") == false)
+            {
+                File.Create("Data.txt");
+                this.Close();
+            }
+
+
+
 
             sp.SoundLocation = "Sounds/BEST-RIDING-ROCK-MUSIC-_NCS-SONG_.wav";
             sp.PlayLooping();
@@ -66,7 +109,7 @@ namespace YariNovella
             }
             else
             {
-                MessageBox.Show("Отсутствует сюжет, игра не запустится, добавьте лист сюжета!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Отсутствует сюжет, игра не запустится, поместите в папку bin/debug или bin/release лист сюжета!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             txtWelcomeName.Text = $"{player.Name}!";
@@ -100,8 +143,39 @@ namespace YariNovella
 
         private void btnContinue_Click(object sender, RoutedEventArgs e)
         {
-
+            if (playerSaves != 0)
+            {
+                playerSaves = thisplayerData.PageNumber - 1;
+                grdMenu.Visibility = Visibility.Hidden;
+                Next();
+                this.ResizeMode = ResizeMode.CanResize;
+            }
+            else
+            {
+                MessageBox.Show("Нет сохранённой игры", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+            PlayerList[thisplayerData.Id - 1].PageNumber = playerSaves;
+
+            if (File.Exists("Data.txt") == true)
+            {
+                using (StreamWriter sw = new StreamWriter("Data.txt", false))
+                {
+                    for (int i = 0; i < PlayerList.Count(); i++)
+                    {
+                        sw.WriteLine($"{PlayerList[i].Id}@{PlayerList[i].Name}@{PlayerList[i].LastName}@{PlayerList[i].Login}@{PlayerList[i].Password}@{PlayerList[i].PageNumber}");
+                    }
+                }
+            }
+        }
+
+
 
         private void PageSelecter(string pagepath) 
         {
@@ -225,9 +299,11 @@ namespace YariNovella
             var thispage = LoreList[playerSaves];
             if (playerSaves == 311)
             {
-                MessageBox.Show("КОНЕЦ!!!!");
+                
+                btn.Visibility = Visibility.Hidden;
+                btnEndClose.Visibility = Visibility.Visible;
+                MainFrame.Navigate(new Page24());
                 sp.Stop();
-                this.Close();
             }
             PageSelecter(thispage.PagePath);
 
@@ -301,8 +377,12 @@ namespace YariNovella
             if (endingcount > 5)
             {
                 MessageBox.Show("Вы не проснулись, это был правильный выбор, до новых встреч!", "Конец!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                btn.Visibility = Visibility.Hidden;
+                btnEndClose.Visibility = Visibility.Visible;
+                wpChoise5.Visibility = Visibility.Hidden;
+                MainFrame.Navigate(new Page24());
                 sp.Stop();
-                this.Close();
+                
             }
         }
 
@@ -367,6 +447,11 @@ namespace YariNovella
                 daycounter++;
                 Next();
             }
+        }
+
+        private void btnEndClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
