@@ -110,6 +110,7 @@ namespace YariNovella
             else
             {
                 MessageBox.Show("Отсутствует сюжет, игра не запустится, поместите в папку bin/debug или bin/release лист сюжета!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
             }
 
             txtWelcomeName.Text = $"{player.Name}!";
@@ -283,79 +284,86 @@ namespace YariNovella
             if (choisenumber == 5)
             {
                 btn.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Hidden;
                 wpChoise5.Visibility = Visibility.Visible;
             }
             if (choisenumber == 141)
             {
                 btn.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Hidden;
                 wpChoise141.Visibility = Visibility.Visible;
             }
         }
 
         private void Next()
         {
-
-            playerSaves++;
-            var thispage = LoreList[playerSaves];
-            if (playerSaves == 311)
+            if (playerSaves == 310)
             {
-                
+
                 btn.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Hidden;
                 btnEndClose.Visibility = Visibility.Visible;
                 MainFrame.Navigate(new Page24());
                 sp.Stop();
-            }
-            PageSelecter(thispage.PagePath);
-
-            //MessageBox.Show(Convert.ToString(thispage.PageNumber));
-
-
-
-            if (thispage.PageNumber == 295 && endingchoise == 0)
-            {
-                playerSaves = 310;
-            }
-            if (thispage.PageNumber == 303 && endingchoise == 1)
-            {
-                playerSaves = 310;
-            }
-            if (thispage.PageNumber == 311 && endingchoise == 2)
-            {
-                playerSaves = 310;
-            }
-
-            if (thispage.PageNumber == 5)
-            {
-                Choise(5);
-            }
-            if (thispage.PageNumber == 141)
-            {
-                Choise(141);
-            }
-            if (thispage.PageNumber == 276)
-            {
-                if (endingchoise == 0)
-                {
-                    playerSaves = 276;
-                }
-                if (endingchoise == 1)
-                {
-                    playerSaves = 295;
-                }   
-                if (endingchoise == 2)
-                {
-                    playerSaves = 303;
-                }
-            }
-
-            txtNamePerson.Text = thispage.PersonageName;
-            if (thispage.TextDialog != "NOTEXT")
-            {
-                txtDialog.Text = thispage.TextDialog;
+                sp.SoundLocation = "Sounds/EndSound.wav";
+                sp.Play();
             }
             else
             {
-                txtDialog.Text = "";
+                playerSaves++;
+                var thispage = LoreList[playerSaves];
+                PageSelecter(thispage.PagePath);
+
+                //MessageBox.Show(Convert.ToString(thispage.PageNumber));
+
+
+
+                if (thispage.PageNumber == 295 && endingchoise == 0)
+                {
+                    playerSaves = 310;
+                }
+                if (thispage.PageNumber == 303 && endingchoise == 1)
+                {
+                    playerSaves = 310;
+                }
+                if (thispage.PageNumber == 311 && endingchoise == 2)
+                {
+                    playerSaves = 310;
+                }
+
+                if (thispage.PageNumber == 5)
+                {
+                    Choise(5);
+                }
+                if (thispage.PageNumber == 141)
+                {
+                    Choise(141);
+                }
+                if (thispage.PageNumber == 276)
+                {
+                    if (endingchoise == 0)
+                    {
+                        playerSaves = 276;
+                    }
+                    if (endingchoise == 1)
+                    {
+                        playerSaves = 295;
+                    }
+                    if (endingchoise == 2)
+                    {
+                        playerSaves = 303;
+                    }
+                }
+
+                txtNamePerson.Text = thispage.PersonageName;
+                if (thispage.TextDialog != "NOTEXT")
+                {
+                    txtDialog.Text = thispage.TextDialog;
+                }
+                else
+                {
+                    txtDialog.Text = "";
+                }
             }
         }
 
@@ -369,6 +377,7 @@ namespace YariNovella
             Next();
             wpChoise5.Visibility = Visibility.Hidden;
             btn.Visibility = Visibility.Visible;
+            btnSave.Visibility = Visibility.Visible;
         }
 
         private void Choise5_2_Click(object sender, RoutedEventArgs e)
@@ -378,11 +387,13 @@ namespace YariNovella
             {
                 MessageBox.Show("Вы не проснулись, это был правильный выбор, до новых встреч!", "Конец!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 btn.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Hidden;
                 btnEndClose.Visibility = Visibility.Visible;
                 wpChoise5.Visibility = Visibility.Hidden;
                 MainFrame.Navigate(new Page24());
                 sp.Stop();
-                
+                sp.SoundLocation = "Sounds/EndSound.wav";
+                sp.Play();
             }
         }
 
@@ -392,6 +403,7 @@ namespace YariNovella
             {
                 btn.Visibility = Visibility.Visible;
                 wpChoise141.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Visible;
                 Next();
             }
             if (daycounter == 2)
@@ -413,6 +425,7 @@ namespace YariNovella
             {
                 btn.Visibility = Visibility.Visible;
                 wpChoise141.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Visible;
                 Next();
             }
             if (daycounter == 2)
@@ -434,6 +447,7 @@ namespace YariNovella
             {
                 btn.Visibility = Visibility.Visible;
                 wpChoise141.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Visible;
                 Next();
             }
             if (daycounter == 2)
@@ -452,6 +466,15 @@ namespace YariNovella
         private void btnEndClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MainFrame_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && playerSaves != 310)
+            {
+                Next();
+            }
+            
         }
     }
 }

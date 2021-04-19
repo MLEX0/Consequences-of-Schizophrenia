@@ -28,6 +28,7 @@
                Grid.ColumnSpan="3"
                Grid.RowSpan="2"
                NavigationUIVisibility="Hidden"
+               MouseDown="MainFrame_MouseDown"
                />
 
         <WrapPanel x:Name="wpChoise5"
